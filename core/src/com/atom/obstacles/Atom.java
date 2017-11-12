@@ -90,8 +90,8 @@ public class Atom {
 
         // guarantee atomShape in bounds
         if (atomShape.x < (-radius)) atomShape.x = (-radius);
-        if (atomShape.y < (-radius)) atomShape.y = (-radius);
+        if (atomShape.y < (-AtomGame.SCENE_HEIGHT/2 + radius)) atomShape.y = (-AtomGame.SCENE_HEIGHT/2 + radius);
         if (atomShape.x > AtomGame.SCENE_WIDTH-radius) atomShape.x = AtomGame.SCENE_WIDTH-radius;
-        if (atomShape.y > AtomGame.SCENE_HEIGHT-radius) atomShape.y = AtomGame.SCENE_HEIGHT-radius;
+        if (atomShape.y > AtomGame.SCENE_HEIGHT/2-radius) atomShape.y = AtomGame.SCENE_HEIGHT/2-radius;
     }
 }

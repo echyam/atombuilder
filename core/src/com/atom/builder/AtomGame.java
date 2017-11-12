@@ -63,6 +63,7 @@ public class AtomGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		float yShift = calcShift();
+		System.out.println(yShift);
 
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
@@ -118,7 +119,7 @@ public class AtomGame extends ApplicationAdapter {
 		plate = Math.abs(atom);
 
 		// k is actually 9 * 10^9, but let's keep the numbers "small"
-		int k = 900000/3;
+		int k = 900000/7;
 		return (float) sign * k*(atom/dist)*(plate/dist);
 	}
 
