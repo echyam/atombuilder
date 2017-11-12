@@ -18,7 +18,9 @@
 
 ### links
 https://github.com/libgdx/libgdx/wiki/Project-Setup-Gradle
+
 https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
+
 https://github.com/libgdx/libgdx/wiki/A-simple-game
 
 https://www.youtube.com/watch?v=CN13SZpApR0
