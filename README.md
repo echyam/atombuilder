@@ -14,7 +14,7 @@
     * Working Directory: _<repo_location>\AtomBuilder\android\assets_
     * Use classpath of module: desktop
   * Android App -> android
-    
+    * (hopefully is preset)
 
 ### links
 https://github.com/libgdx/libgdx/wiki/Project-Setup-Gradle
