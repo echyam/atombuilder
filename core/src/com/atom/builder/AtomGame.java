@@ -36,8 +36,8 @@ public class AtomGame extends ApplicationAdapter {
 		atomImage = new Texture("circle.png");
 		atom = new Circle();
 		atom.setRadius(100);
-		atom.x = 0;
-		atom.y = 0;
+		atom.x = atom.radius;
+		atom.y = SCENE_HEIGHT/2 - atom.radius;
 
 		capacitorImage = new Texture("capacitorImage.png");
 		capacitor = new Rectangle();
@@ -61,8 +61,8 @@ public class AtomGame extends ApplicationAdapter {
 		//batch.draw(img, 0, 0);
 //		batch.draw(capacitorImage,capacitor.x,capacitor.y);
 //		batch.draw(atomImage,300,SCENE_HEIGHT/2 - atom.radius/2);
-		batch.draw(atomImage,atom.x,SCENE_HEIGHT/2 - atom.radius/2 + atom.y);
 		batch.draw(capacitorImage,0,0);
+		batch.draw(atomImage, atom.x, atom.y);
 		batch.end();
 
 		// android input
@@ -70,8 +70,8 @@ public class AtomGame extends ApplicationAdapter {
 			Vector3 touchPos = new Vector3();
 			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
 			camera.unproject(touchPos);
-			atom.x = touchPos.x;
-			atom.y = touchPos.y;
+			atom.x = touchPos.x - atom.radius;
+			atom.y = touchPos.y - atom.radius;
 		}
 
 		// keyboard input
@@ -79,6 +79,12 @@ public class AtomGame extends ApplicationAdapter {
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) atom.x += 200 * Gdx.graphics.getDeltaTime();
 		if(Gdx.input.isKeyPressed(Input.Keys.UP)) atom.y += 200 * Gdx.graphics.getDeltaTime();
 		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) atom.y -= 200 * Gdx.graphics.getDeltaTime();
+
+		// guarantee atom in bounds
+		if (atom.x < (-atom.radius)) atom.x = (-atom.radius);
+		if (atom.y < (-atom.radius)) atom.y = (-atom.radius);
+		if (atom.x > SCENE_WIDTH-atom.radius) atom.x = SCENE_WIDTH-atom.radius;
+		if (atom.y > SCENE_HEIGHT-atom.radius) atom.y = SCENE_HEIGHT-atom.radius;
 	}
 	
 	@Override
