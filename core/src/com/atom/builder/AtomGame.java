@@ -1,29 +1,35 @@
 package com.atom.builder;
 
+import com.atom.obstacles.Atom;
+import com.atom.obstacles.Capacitor;
+import com.atom.obstacles.ElectricPlate;
+import com.atom.obstacles.Obstacle;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector3;
+
+import java.util.ArrayList;
 
 public class AtomGame extends ApplicationAdapter {
-	public final float SCENE_WIDTH = 1600;
-	public final float SCENE_HEIGHT = 900;
+	public static final float SCENE_WIDTH = 1600;
+	public static final float SCENE_HEIGHT = 900;
 
 	private OrthographicCamera camera;
 	private SpriteBatch batch;
-	private Texture img;
+
 	private Texture atomImage;
-	private Texture capacitorImage;
+	private Texture positivePlate;
+	private Texture negativePlate;
 //	private Music backgroundMusic;
 
-	private Rectangle capacitor;
-	private Circle atom;
+	private Capacitor cap;
+	private ElectricPlate plate;
+	private Atom atom;
+
+	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 	
 	@Override
 	public void create () {
@@ -31,22 +37,24 @@ public class AtomGame extends ApplicationAdapter {
 		camera.setToOrtho(false,1600,900);
 		batch = new SpriteBatch();
 
-		img = new Texture("badlogic.jpg");
-
 		atomImage = new Texture("circle.png");
-		atom = new Circle();
-		atom.setRadius(100);
-		atom.x = atom.radius;
-		atom.y = SCENE_HEIGHT/2 - atom.radius;
+		positivePlate = new Texture("positivePlate.png");
+		negativePlate = new Texture("negativePlate.png");
 
-		capacitorImage = new Texture("capacitorImage.png");
-		capacitor = new Rectangle();
-		capacitor.width = 500;
-		capacitor.height = 100;
+		atom = new Atom();
+
+		createObstacles();
 
 //		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background.mp3"));
 //		backgroundMusic.setLooping(true);
 //		backgroundMusic.play();
+	}
+
+	public void createObstacles() {
+		cap = new Capacitor(400,500,50);
+		obstacles.add(cap);
+		plate = new ElectricPlate(1100, 500, 50,false);
+		obstacles.add(plate);
 	}
 
 	@Override
@@ -54,42 +62,77 @@ public class AtomGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0.710f, 0.710f, 0.835f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		float yShift = calcShift();
+		System.out.println(yShift);
+
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		//batch.draw(img, 0, 0);
-//		batch.draw(capacitorImage,capacitor.x,capacitor.y);
-//		batch.draw(atomImage,300,SCENE_HEIGHT/2 - atom.radius/2);
-		batch.draw(capacitorImage,0,0);
-		batch.draw(atomImage, atom.x, atom.y);
+		cap.draw(batch, positivePlate, negativePlate);
+		plate.draw(batch, positivePlate, negativePlate);
+		atom.draw(batch, camera, atomImage, yShift);
 		batch.end();
 
-		// android input
-		if(Gdx.input.isTouched()) {
-			Vector3 touchPos = new Vector3();
-			touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-			camera.unproject(touchPos);
-			atom.x = touchPos.x - atom.radius;
-			atom.y = touchPos.y - atom.radius;
+//		System.out.println(capacitorForce(atom.getCharge(),plate.strength,plate.up,atom.yPos()));
+//		System.out.println(electricPlateForce(atom.getCharge(),plate.strength,plate.up,atom.yPos()));
+	}
+
+	public float calcShift() {
+		float yShift = 0;
+		for(Obstacle o : obstacles) {
+			if (o instanceof Capacitor) {
+				Capacitor c = (Capacitor) o;
+				if (atom.xPos() >= c.x && atom.xPos() <= c.x+c.width) {
+					yShift = capacitorForce(atom.getCharge(),c.strength,c.up,atom.yPos());
+				}
+			}
+			if (o instanceof ElectricPlate) {
+				ElectricPlate ep = (ElectricPlate) o;
+				if (atom.xPos() >= ep.x && atom.xPos() <= ep.x+ep.width)
+					yShift = electricPlateForce(atom.getCharge(),ep.strength,ep.up,atom.yPos());
+			}
 		}
-
-		// keyboard input
-		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) atom.x -= 200 * Gdx.graphics.getDeltaTime();
-		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) atom.x += 200 * Gdx.graphics.getDeltaTime();
-		if(Gdx.input.isKeyPressed(Input.Keys.UP)) atom.y += 200 * Gdx.graphics.getDeltaTime();
-		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) atom.y -= 200 * Gdx.graphics.getDeltaTime();
-
-		// guarantee atom in bounds
-		if (atom.x < (-atom.radius)) atom.x = (-atom.radius);
-		if (atom.y < (-atom.radius)) atom.y = (-atom.radius);
-		if (atom.x > SCENE_WIDTH-atom.radius) atom.x = SCENE_WIDTH-atom.radius;
-		if (atom.y > SCENE_HEIGHT-atom.radius) atom.y = SCENE_HEIGHT-atom.radius;
+		return yShift;
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+//		img.dispose();
+		atomImage.dispose();
+		positivePlate.dispose();
+		negativePlate.dispose();
+	}
+
+	public float electricPlateForce(float atom, float plate, boolean up, float ypos) {
+		int sign = (Math.signum(atom) == Math.signum(plate))? 1 : -1;
+		float dist;
+		if (up) {
+			sign *= -1;
+			dist = 450-100-ypos;
+		} else {
+			dist = 450-100+ypos;
+		}
+//		System.out.println("atom:"+atom+" plate:"+plate+" dist:"+dist+" sign:"+sign+" ypos:"+ypos);
+		atom = Math.abs(atom);
+		plate = Math.abs(atom);
+
+		// k is actually 9 * 10^9, but let's keep the numbers "small"
+		int k = 900000/7;
+		return (float) sign * k*(atom/dist)*(plate/dist);
+	}
+
+	// plus on top is up
+	public float capacitorForce(float atom, float capacitor, boolean up, float ypos) {
+		float pos,neg;
+		if (up) {
+			pos = electricPlateForce(atom,capacitor,true,ypos);
+			neg = electricPlateForce(atom,-1*capacitor,false,ypos);
+		} else {
+			pos = electricPlateForce(atom,capacitor,false,ypos);
+			neg = electricPlateForce(atom,-1*capacitor,true,ypos);
+		}
+		return pos+neg;
 	}
 }
