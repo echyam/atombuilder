@@ -91,5 +91,7 @@ public class AtomGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		img.dispose();
+		atomImage.dispose();
+		capacitorImage.dispose();
 	}
 }
