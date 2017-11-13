@@ -74,7 +74,10 @@ public class Atom {
     }
 
     public float getSpeed() {
-        speed = -1*(atomicNum+numNeutrons)*(atomicNum+numNeutrons)/1400 + 10;
+        if (atomicNum + numNeutrons > 118)
+            speed = 0.1f;
+        else
+            speed = -1*(atomicNum+numNeutrons)*(atomicNum+numNeutrons)/1400 + 10;
 //        speed = 10;
         return speed;
     }

@@ -23,12 +23,12 @@ public class Proton extends Obstacle {
         y = yy;
     }
 
+    public void draw(SpriteBatch batch, Texture protonImage) {
+        batch.draw(protonImage,x-radius,y-radius);
+    }
+
     public void collideAtom(Atom atom) {
         // TODO
         atom.addProton();
-    }
-
-    public void draw(SpriteBatch batch, Texture protonImage) {
-        batch.draw(protonImage,x-radius,y-radius);
     }
 }

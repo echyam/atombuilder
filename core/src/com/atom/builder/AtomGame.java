@@ -4,6 +4,7 @@ import com.atom.obstacles.Atom;
 import com.atom.obstacles.Capacitor;
 import com.atom.obstacles.ElectricPlate;
 import com.atom.obstacles.Electron;
+import com.atom.obstacles.Neutron;
 import com.atom.obstacles.Obstacle;
 import com.atom.obstacles.Proton;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -33,6 +34,7 @@ public class AtomGame extends ApplicationAdapter {
 	private Texture atomImage;
 	private Texture electronImage;
 	private Texture protonImage;
+	private Texture neutronImage;
 	private Texture insulatorImage;
 	private Texture positivePlate;
 	private Texture negativePlate;
@@ -43,6 +45,7 @@ public class AtomGame extends ApplicationAdapter {
 	private Atom atom;
 	private Electron elec;
 	private Proton prot;
+    private Neutron neutr;
 
 	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 
@@ -75,6 +78,7 @@ public class AtomGame extends ApplicationAdapter {
 		atomImage = new Texture("circle.png");
 		electronImage = new Texture("electron.png");
 		protonImage = new Texture("proton.png");
+		neutronImage = new Texture("neutron.png");
 		insulatorImage = new Texture("circle.png");
 		positivePlate = new Texture("positivePlate.png");
 		negativePlate = new Texture("negativePlate.png");
@@ -98,8 +102,10 @@ public class AtomGame extends ApplicationAdapter {
 
 		elec = new Electron(200,300);
 		obstacles.add(elec);
-		prot = new Proton(1400,650);
+		prot = new Proton(1400,700);
 		obstacles.add(prot);
+        neutr = new Neutron(1300, 300);
+        obstacles.add(neutr);
 	}
 
 	@Override
@@ -133,6 +139,10 @@ public class AtomGame extends ApplicationAdapter {
 			if (o instanceof Proton) {
 				Proton p = (Proton) o;
 				p.draw(batch,protonImage);
+			}
+			if (o instanceof Neutron) {
+				Neutron n = (Neutron) o;
+				n.draw(batch,neutronImage);
 			}
 		}
 		atom.draw(batch, camera, atomImage, insulatorImage, yShift, elementFont);
@@ -184,6 +194,18 @@ public class AtomGame extends ApplicationAdapter {
 //				System.out.printf("\n"+dist);
 				if (dist <= (atom.getRadius()+p.radius)) {
 					atom.addProton();
+//					System.out.printf(" "+Float.toString(p.x)+","+Float.toString(p.y));
+//					obstacles.remove(o);
+				}
+			}
+			if (o instanceof Neutron) {
+				Neutron n = (Neutron) o;
+				float xs = (atom.xPos()) - (n.x);
+				float ys = (SCENE_HEIGHT/2+atom.yPos()) - (n.y);
+				double dist = Math.sqrt( (double) (xs*xs) + (double) (ys*ys) );
+//				System.out.printf("\n"+dist);
+				if (dist <= (atom.getRadius()+n.radius)) {
+					atom.addNeutron();
 //					System.out.printf(" "+Float.toString(p.x)+","+Float.toString(p.y));
 //					obstacles.remove(o);
 				}
