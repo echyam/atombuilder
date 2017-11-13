@@ -7,12 +7,12 @@ import com.badlogic.gdx.math.Rectangle;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
- * Created by Lizzy on 11/12/2017.
+ * Created by echyam on 11/12/2017.
  */
 public class ElectricPlate extends Obstacle {
     // up means top
     public boolean up;
-    public static final float strength = 50;
+    public static final float strength = 100;
     public boolean charge = true;
     public float height;
     public float width;

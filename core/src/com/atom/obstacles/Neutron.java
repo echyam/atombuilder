@@ -5,30 +5,34 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
- * Created by Lizzy on 11/13/2017.
+ * Created by echyam on 11/13/2017.
  */
 
 public class Neutron extends Obstacle {
-    public float x;
-    public float y;
-    public final float radius = 50;
+    public double x;
+    public double y;
+    public final double radius = 50;
+//    public boolean alive = true;
 
     public Neutron() {
         x = AtomGame.SCENE_WIDTH-200;
         y = AtomGame.SCENE_HEIGHT/2;
     }
 
-    public Neutron(float xx, float yy) {
+    public Neutron(double xx, double yy) {
         x = xx;
         y = yy;
     }
 
     public void draw(SpriteBatch batch, Texture neutronImage) {
-        batch.draw(neutronImage,x-radius,y-radius);
+        batch.draw(neutronImage,(float)(x-radius),(float)(y-radius));
     }
 
-    public void collideAtom(Atom atom) {
+    public synchronized void collideAtom(Atom atom) {
         // TODO
-        atom.addNeutron();
+        if (alive) {
+            alive = false;
+            atom.addNeutron();
+        }
     }
 }
