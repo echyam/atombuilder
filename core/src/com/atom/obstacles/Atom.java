@@ -8,6 +8,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Logger;
+
+import sun.rmi.runtime.Log;
+
+import static sun.rmi.runtime.Log.*;
 
 /**
  * Created by Lizzy on 11/12/2017.
@@ -68,8 +73,8 @@ public class Atom {
     }
 
     public void draw(SpriteBatch batch, OrthographicCamera camera, Texture atomTexture, float yShift) {
-        batch.draw(atomTexture,atomShape.x,AtomGame.SCENE_HEIGHT/2 - radius + atomShape.y+yShift);
-
+        if (Math.abs(yShift) > 800)
+            yShift = 0;
         atomShape.y += yShift;
 
         // updates
@@ -78,8 +83,10 @@ public class Atom {
             Vector3 touchPos = new Vector3();
             touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             camera.unproject(touchPos);
-            atomShape.x = touchPos.x - radius;
-            atomShape.y = touchPos.y - radius;
+            if (touchPos.x < (atomShape.x)) atomShape.x -= 400 * Gdx.graphics.getDeltaTime();
+            if (touchPos.x > 2*radius + atomShape.x) atomShape.x += 400 * Gdx.graphics.getDeltaTime();
+            if (touchPos.y > 2*radius + AtomGame.SCENE_HEIGHT/2 + atomShape.y) atomShape.y += 400 * Gdx.graphics.getDeltaTime();
+            if (touchPos.y < AtomGame.SCENE_HEIGHT/2 + atomShape.y) atomShape.y -= 400 * Gdx.graphics.getDeltaTime();
         }
 
         // keyboard input
@@ -93,5 +100,10 @@ public class Atom {
         if (atomShape.y < (-AtomGame.SCENE_HEIGHT/2 + radius)) atomShape.y = (-AtomGame.SCENE_HEIGHT/2 + radius);
         if (atomShape.x > AtomGame.SCENE_WIDTH-radius) atomShape.x = AtomGame.SCENE_WIDTH-radius;
         if (atomShape.y > AtomGame.SCENE_HEIGHT/2-radius) atomShape.y = AtomGame.SCENE_HEIGHT/2-radius;
+
+
+        batch.draw(atomTexture,atomShape.x,AtomGame.SCENE_HEIGHT/2 - radius + atomShape.y+yShift);
+
+//        System.out.printf(atomShape.y+" "+yShift);
     }
 }

@@ -6,6 +6,7 @@ import com.atom.obstacles.ElectricPlate;
 import com.atom.obstacles.Obstacle;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -63,7 +64,7 @@ public class AtomGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		float yShift = calcShift();
-		System.out.println(yShift);
+//		System.out.println(yShift);
 
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
@@ -73,6 +74,8 @@ public class AtomGame extends ApplicationAdapter {
 		plate.draw(batch, positivePlate, negativePlate);
 		atom.draw(batch, camera, atomImage, yShift);
 		batch.end();
+
+		if(Gdx.input.isKeyPressed(Input.Keys.R)) reset();
 
 //		System.out.println(capacitorForce(atom.getCharge(),plate.strength,plate.up,atom.yPos()));
 //		System.out.println(electricPlateForce(atom.getCharge(),plate.strength,plate.up,atom.yPos()));
@@ -103,6 +106,11 @@ public class AtomGame extends ApplicationAdapter {
 		atomImage.dispose();
 		positivePlate.dispose();
 		negativePlate.dispose();
+	}
+
+	public void reset() {
+		dispose();
+		create();
 	}
 
 	public float electricPlateForce(float atom, float plate, boolean up, float ypos) {
