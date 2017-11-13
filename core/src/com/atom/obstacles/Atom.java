@@ -27,9 +27,12 @@ public class Atom {
     private Circle atomShape;
     private Circle faradaysCage;
 
+    public boolean alive;
+
     private String[] elements = {"","H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr","Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe","Cs","Ba","La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn","Fr","Ra","Ac","Th","Pa","U","Np","Pu","Am","Cm","Bk","Cf","Es","Fm","Md","No","Lr","Rf","Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn","Nh","Fl","Mc","Lv","Ts","Og"};
 
     public Atom() {
+        alive = true;
         atomicNum = 1;
         numElectrons = 0;
         numNeutrons = 0;
@@ -49,6 +52,22 @@ public class Atom {
         faradaysCage.y = atomShape.y;
     }
 
+    public void reset() {
+        alive = true;
+        atomicNum = 1;
+        numElectrons = 0;
+        numNeutrons = 0;
+        insulator = false;
+
+        strength = atomicNum - numElectrons;
+        speed = -1*(atomicNum+numNeutrons)*(atomicNum+numNeutrons)/900 + 150;
+
+        atomShape.x = AtomGame.SCENE_WIDTH/2;
+        atomShape.y = 0;
+        faradaysCage.x = atomShape.x;
+        faradaysCage.y = atomShape.y;
+    }
+
     public float getSpeed() {
         speed = -1*(atomicNum+numNeutrons)*(atomicNum+numNeutrons)/900 + 150;
         return speed;
@@ -63,12 +82,28 @@ public class Atom {
         return atomicNum;
     }
 
+    public int getNumElectrons() { return numElectrons; }
+
+    public int getNumNeutrons() { return numNeutrons; }
+
+    public float getRadius() {
+        return radius;
+    }
+
     public void addProton() {
-        atomicNum += 1;
+//        System.out.printf("proton!\n"+Float.toString(atomShape.x)+","+Float.toString(AtomGame.SCENE_HEIGHT/2+atomShape.y));
+        if (atomicNum < elements.length-1)
+            atomicNum += 1;
+        else
+            atomicNum = 0;
     }
 
     public void addElectron() {
-        numElectrons += 1;
+//        System.out.printf("electron!\n");
+        if (numElectrons < elements.length-1)
+            numElectrons+= 1;
+        else
+            numElectrons = 0;
     }
 
     public void addNeutron() {
@@ -88,43 +123,60 @@ public class Atom {
             yShift = 0;
         atomShape.y += yShift;
 
-        // updates
-        // android input
-        if(Gdx.input.isTouched()) {
-            Vector3 touchPos = new Vector3();
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            if (touchPos.x < (atomShape.x)) atomShape.x -= 400 * Gdx.graphics.getDeltaTime();
-            if (touchPos.x > 2*radius + atomShape.x) atomShape.x += 400 * Gdx.graphics.getDeltaTime();
-            if (touchPos.y > 2*radius + AtomGame.SCENE_HEIGHT/2 + atomShape.y) atomShape.y += 400 * Gdx.graphics.getDeltaTime();
-            if (touchPos.y < AtomGame.SCENE_HEIGHT/2 + atomShape.y) atomShape.y -= 400 * Gdx.graphics.getDeltaTime();
+        if (alive) {
+            // updates
+            // android input
+            if (Gdx.input.isTouched()) {
+                Vector3 touchPos = new Vector3();
+                touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+                camera.unproject(touchPos);
+                if (touchPos.x < (atomShape.x)) atomShape.x -= 400 * Gdx.graphics.getDeltaTime();
+                if (touchPos.x > 2 * radius + atomShape.x)
+                    atomShape.x += 400 * Gdx.graphics.getDeltaTime();
+                if (touchPos.y > 2 * radius + AtomGame.SCENE_HEIGHT / 2 + atomShape.y)
+                    atomShape.y += 400 * Gdx.graphics.getDeltaTime();
+                if (touchPos.y < AtomGame.SCENE_HEIGHT / 2 + atomShape.y)
+                    atomShape.y -= 400 * Gdx.graphics.getDeltaTime();
+            }
+
+            // keyboard input
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A))
+                atomShape.x -= 400 * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D))
+                atomShape.x += 400 * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W))
+                atomShape.y += 400 * Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S))
+                atomShape.y -= 400 * Gdx.graphics.getDeltaTime();
+
+            // guarantee atomShape in bounds
+            if (atomShape.x < (-radius)) atomShape.x = (-radius);
+            if (atomShape.y < (-AtomGame.SCENE_HEIGHT / 2 + radius))
+                atomShape.y = (-AtomGame.SCENE_HEIGHT / 2 + radius);
+            if (atomShape.x > AtomGame.SCENE_WIDTH - radius)
+                atomShape.x = AtomGame.SCENE_WIDTH - radius;
+            if (atomShape.y > AtomGame.SCENE_HEIGHT / 2 - radius)
+                atomShape.y = AtomGame.SCENE_HEIGHT / 2 - radius;
         }
-
-        // keyboard input
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) atomShape.x -= 400 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) atomShape.x += 400 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) atomShape.y += 400 * Gdx.graphics.getDeltaTime();
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) atomShape.y -= 400 * Gdx.graphics.getDeltaTime();
-
-        // guarantee atomShape in bounds
-        if (atomShape.x < (-radius)) atomShape.x = (-radius);
-        if (atomShape.y < (-AtomGame.SCENE_HEIGHT/2 + radius)) atomShape.y = (-AtomGame.SCENE_HEIGHT/2 + radius);
-        if (atomShape.x > AtomGame.SCENE_WIDTH-radius) atomShape.x = AtomGame.SCENE_WIDTH-radius;
-        if (atomShape.y > AtomGame.SCENE_HEIGHT/2-radius) atomShape.y = AtomGame.SCENE_HEIGHT/2-radius;
 
         // draw insulator
         if (insulator) {
             faradaysCage.x = atomShape.x;
             faradaysCage.y = atomShape.y;
+            // TODO test coords
             batch.draw(insulatorTexture,atomShape.x,AtomGame.SCENE_HEIGHT/2 - radius + atomShape.y+yShift);
         }
 
         // draw atom
-        batch.draw(atomTexture,atomShape.x,AtomGame.SCENE_HEIGHT/2 - radius + atomShape.y+yShift);
+        batch.draw(atomTexture,atomShape.x-radius,AtomGame.SCENE_HEIGHT/2+atomShape.y-radius+yShift);
 
         // draw element number
-        font.draw(batch,elements[atomicNum]+"+",atomShape.x+radius-25,atomShape.y+AtomGame.SCENE_HEIGHT/2+15);
+        font.draw(batch,elements[atomicNum]+"+",atomShape.x-35,atomShape.y+AtomGame.SCENE_HEIGHT/2+15);
 
 //        System.out.printf(atomShape.y+" "+yShift);
+    }
+
+    public void die() {
+        alive = false;
     }
 }

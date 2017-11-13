@@ -74,7 +74,7 @@ public class Capacitor extends Obstacle{
     }
 
     public void collideAtom(Atom atom) {
-        // TODO
+        atom.die();
     }
 
     public void draw(SpriteBatch batch, Texture pos, Texture neg) {

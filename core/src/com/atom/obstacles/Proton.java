@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Proton extends Obstacle {
     public float x;
     public float y;
+    public final float radius = 50;
 
     public Proton() {
         x = AtomGame.SCENE_WIDTH-200;
@@ -28,6 +29,6 @@ public class Proton extends Obstacle {
     }
 
     public void draw(SpriteBatch batch, Texture protonImage) {
-        batch.draw(protonImage,x-25,y-25);
+        batch.draw(protonImage,x-radius,y-radius);
     }
 }

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Electron extends Obstacle {
     public float x;
     public float y;
+    public final float radius = 25;
 
     public Electron() {
         x = AtomGame.SCENE_WIDTH-200;
@@ -28,6 +29,6 @@ public class Electron extends Obstacle {
     }
 
     public void draw(SpriteBatch batch, Texture electronImage) {
-        batch.draw(electronImage,x-25,y-25);
+        batch.draw(electronImage,x-radius,y-radius);
     }
 }
