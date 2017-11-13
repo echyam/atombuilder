@@ -46,6 +46,7 @@ public class AtomGame extends ApplicationAdapter {
 
 	private ArrayList<Obstacle> obstacles = new ArrayList<Obstacle>();
 
+	public final int K = 900000/6;
 	float yShift;
 	
 	@Override
@@ -88,16 +89,16 @@ public class AtomGame extends ApplicationAdapter {
 	}
 
 	public void createObstacles() {
-//		cap = new Capacitor(400,300,50);
-//		obstacles.add(cap);
-//		plate = new ElectricPlate(800, 300, 50, false);
-//		obstacles.add(plate);
-//		plate = new ElectricPlate(800, 300, 50, true);
-//		obstacles.add(plate);
+		cap = new Capacitor(400,300,50);
+		obstacles.add(cap);
+		plate = new ElectricPlate(800, 300, true, true);
+		obstacles.add(plate);
+		plate = new ElectricPlate(800, 300, false, true);
+		obstacles.add(plate);
 
-		elec = new Electron(1100,300);
+		elec = new Electron(200,300);
 		obstacles.add(elec);
-		prot = new Proton(900,500);
+		prot = new Proton(1400,650);
 		obstacles.add(prot);
 	}
 
@@ -216,6 +217,9 @@ public class AtomGame extends ApplicationAdapter {
 		batch.dispose();
 //		img.dispose();
 		atomImage.dispose();
+		electronImage.dispose();
+		protonImage.dispose();
+		insulatorImage.dispose();
 		positivePlate.dispose();
 		negativePlate.dispose();
 	}
@@ -240,8 +244,7 @@ public class AtomGame extends ApplicationAdapter {
 		plate = Math.abs(atom);
 
 		// k is actually 9 * 10^9, but let's keep the numbers "small"
-		int k = 900000/4;
-		return (float) sign * k*(atom/dist)*(plate/dist);
+		return (float) sign * K*(atom/dist)*(plate/dist);
 	}
 
 	// plus on top is up
