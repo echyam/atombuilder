@@ -236,13 +236,14 @@ public class Atom {
                 atomShape.y -= keyboardSpeed * Gdx.graphics.getDeltaTime();
 
             // guarantee atomShape in bounds
-            if (atomShape.x < (-radius)) atomShape.x = (float)(-radius);
-            if (atomShape.y < (-AtomGame.SCENE_HEIGHT / 2 + radius))
-                atomShape.y = (float)(-AtomGame.SCENE_HEIGHT / 2 + (float)radius);
+            if (atomShape.x < (-radius))
+                atomShape.x = (float)(-radius);
+            if (atomShape.y < (-AtomGame.SCENE_HEIGHT / 2 + radius) + 100)
+                atomShape.y = (float)(-AtomGame.SCENE_HEIGHT / 2 + (float)radius)+100;
             if (atomShape.x > AtomGame.SCENE_WIDTH - radius)
                 atomShape.x = (float)AtomGame.SCENE_WIDTH - (float)radius;
-            if (atomShape.y > AtomGame.SCENE_HEIGHT / 2 - radius)
-                atomShape.y = (float)AtomGame.SCENE_HEIGHT / 2 - (float)radius;
+            if (atomShape.y > AtomGame.SCENE_HEIGHT / 2 - radius - 100)
+                atomShape.y = (float)AtomGame.SCENE_HEIGHT / 2 - (float)radius-100;
         }
     }
 

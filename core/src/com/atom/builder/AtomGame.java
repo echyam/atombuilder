@@ -17,6 +17,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.Vector3;
 
 import java.awt.Color;
 import java.awt.geom.Arc2D;
@@ -236,6 +237,16 @@ public class AtomGame extends ApplicationAdapter {
                 nLock = true;
             }
         }
+
+        if (Gdx.input.isTouched()) {
+            Vector3 touchPos = new Vector3();
+            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            camera.unproject(touchPos);
+            if (touchPos.x < 300 && touchPos.y > 800) {
+                reset();
+            }
+        }
+
 //		System.out.printf("done updating\n");
     }
 
