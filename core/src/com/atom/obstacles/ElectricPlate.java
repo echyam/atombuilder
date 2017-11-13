@@ -4,6 +4,7 @@ import com.atom.builder.AtomGame;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
  * Created by Lizzy on 11/12/2017.
@@ -11,7 +12,6 @@ import com.badlogic.gdx.math.Rectangle;
 public class ElectricPlate extends Obstacle {
     // up means top
     public boolean up;
-    public boolean positive;
     public float strength;
     public float height;
     public float width;
@@ -24,7 +24,6 @@ public class ElectricPlate extends Obstacle {
         height = 100;
         width = 100;
         up = true;
-        positive = true;
         strength = 50;
         x = 100;
         y = AtomGame.SCENE_HEIGHT - height;
@@ -36,7 +35,6 @@ public class ElectricPlate extends Obstacle {
         width = w;
         height = 100;
         up = true;
-        positive = true;
         strength = 50;
         x = 100;
         y = AtomGame.SCENE_HEIGHT - height;
@@ -48,7 +46,6 @@ public class ElectricPlate extends Obstacle {
         width = w;
         height = 100;
         up = top;
-        positive = true;
         strength = 50;
         x = 100;
         y = (up) ? AtomGame.SCENE_HEIGHT - height : 0;
@@ -71,7 +68,6 @@ public class ElectricPlate extends Obstacle {
         height = 100;
         width = w;
         up = true;
-        positive = true;
         strength = str;
         this.x = x;
         y = AtomGame.SCENE_HEIGHT - height;
@@ -83,7 +79,6 @@ public class ElectricPlate extends Obstacle {
         height = 100;
         width = w;
         up = top;
-        positive = true;
         strength = str;
         this.x = x;
         y = (up) ? AtomGame.SCENE_HEIGHT - height : 0;
@@ -96,7 +91,7 @@ public class ElectricPlate extends Obstacle {
     }
 
     public void draw(SpriteBatch batch, Texture pos, Texture neg) {
-        if (positive)
+        if (strength >=0)
             batch.draw(pos,plate.x,plate.y);
         else
             batch.draw(neg,plate.x,plate.y);

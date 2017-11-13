@@ -22,6 +22,7 @@ public class AtomGame extends ApplicationAdapter {
 	private SpriteBatch batch;
 
 	private Texture atomImage;
+	private Texture insulatorImage;
 	private Texture positivePlate;
 	private Texture negativePlate;
 //	private Music backgroundMusic;
@@ -39,6 +40,7 @@ public class AtomGame extends ApplicationAdapter {
 		batch = new SpriteBatch();
 
 		atomImage = new Texture("circle.png");
+		insulatorImage = new Texture("circle.png");
 		positivePlate = new Texture("positivePlate.png");
 		negativePlate = new Texture("negativePlate.png");
 
@@ -52,9 +54,11 @@ public class AtomGame extends ApplicationAdapter {
 	}
 
 	public void createObstacles() {
-		cap = new Capacitor(400,500,50);
+		cap = new Capacitor(400,300,50);
 		obstacles.add(cap);
-		plate = new ElectricPlate(1100, 500, 50,false);
+		plate = new ElectricPlate(800, 300, 50, false);
+		obstacles.add(plate);
+		plate = new ElectricPlate(800, 300, 50, true);
 		obstacles.add(plate);
 	}
 
@@ -64,15 +68,25 @@ public class AtomGame extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		float yShift = calcShift();
+//		if (yShift < 1)
+//			yShift = 0;
 //		System.out.println(yShift);
 
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
 		batch.begin();
-		cap.draw(batch, positivePlate, negativePlate);
-		plate.draw(batch, positivePlate, negativePlate);
-		atom.draw(batch, camera, atomImage, yShift);
+		for(Obstacle o : obstacles) {
+			if (o instanceof  Capacitor) {
+				Capacitor c = (Capacitor) o;
+				c.draw(batch,positivePlate,negativePlate);
+			}
+			if (o instanceof ElectricPlate) {
+				ElectricPlate ep = (ElectricPlate) o;
+				ep.draw(batch,positivePlate,negativePlate);
+			}
+		}
+		atom.draw(batch, camera, atomImage, insulatorImage, yShift);
 		batch.end();
 
 		if(Gdx.input.isKeyPressed(Input.Keys.R)) reset();
@@ -87,15 +101,16 @@ public class AtomGame extends ApplicationAdapter {
 			if (o instanceof Capacitor) {
 				Capacitor c = (Capacitor) o;
 				if (atom.xPos() >= c.x && atom.xPos() <= c.x+c.width) {
-					yShift = capacitorForce(atom.getCharge(),c.strength,c.up,atom.yPos());
+					yShift += capacitorForce(atom.getCharge(),c.strength,c.up,atom.yPos());
 				}
 			}
 			if (o instanceof ElectricPlate) {
 				ElectricPlate ep = (ElectricPlate) o;
 				if (atom.xPos() >= ep.x && atom.xPos() <= ep.x+ep.width)
-					yShift = electricPlateForce(atom.getCharge(),ep.strength,ep.up,atom.yPos());
+					yShift += electricPlateForce(atom.getCharge(),ep.strength,ep.up,atom.yPos());
 			}
 		}
+//		System.out.printf(Float.toString(yShift)+"\n");
 		return yShift;
 	}
 	
@@ -122,7 +137,7 @@ public class AtomGame extends ApplicationAdapter {
 		} else {
 			dist = 450-100+ypos;
 		}
-//		System.out.println("atom:"+atom+" plate:"+plate+" dist:"+dist+" sign:"+sign+" ypos:"+ypos);
+		System.out.println("atom:"+atom+" plate:"+plate+" dist:"+dist+" sign:"+sign+" ypos:"+ypos);
 		atom = Math.abs(atom);
 		plate = Math.abs(atom);
 
