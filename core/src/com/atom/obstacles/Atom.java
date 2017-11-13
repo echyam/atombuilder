@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector3;
@@ -25,6 +26,8 @@ public class Atom {
     private float radius = 100;
     private Circle atomShape;
     private Circle faradaysCage;
+
+    private String[] elements = {"","H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr","Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe","Cs","Ba","La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn","Fr","Ra","Ac","Th","Pa","U","Np","Pu","Am","Cm","Bk","Cf","Es","Fm","Md","No","Lr","Rf","Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn","Nh","Fl","Mc","Lv","Ts","Og"};
 
     public Atom() {
         atomicNum = 1;
@@ -56,6 +59,10 @@ public class Atom {
         return charge;
     }
 
+    public int getAtomicNum(){
+        return atomicNum;
+    }
+
     public void addProton() {
         atomicNum += 1;
     }
@@ -76,7 +83,7 @@ public class Atom {
         return atomShape.y;
     }
 
-    public void draw(SpriteBatch batch, OrthographicCamera camera, Texture atomTexture, Texture insulatorTexture, float yShift) {
+    public void draw(SpriteBatch batch, OrthographicCamera camera, Texture atomTexture, Texture insulatorTexture, float yShift, BitmapFont font) {
         if (Math.abs(yShift) > 800)
             yShift = 0;
         atomShape.y += yShift;
@@ -105,13 +112,18 @@ public class Atom {
         if (atomShape.x > AtomGame.SCENE_WIDTH-radius) atomShape.x = AtomGame.SCENE_WIDTH-radius;
         if (atomShape.y > AtomGame.SCENE_HEIGHT/2-radius) atomShape.y = AtomGame.SCENE_HEIGHT/2-radius;
 
-        batch.draw(atomTexture,atomShape.x,AtomGame.SCENE_HEIGHT/2 - radius + atomShape.y+yShift);
-
+        // draw insulator
         if (insulator) {
             faradaysCage.x = atomShape.x;
             faradaysCage.y = atomShape.y;
             batch.draw(insulatorTexture,atomShape.x,AtomGame.SCENE_HEIGHT/2 - radius + atomShape.y+yShift);
         }
+
+        // draw atom
+        batch.draw(atomTexture,atomShape.x,AtomGame.SCENE_HEIGHT/2 - radius + atomShape.y+yShift);
+
+        // draw element number
+        font.draw(batch,elements[atomicNum]+"+",atomShape.x+radius-25,atomShape.y+AtomGame.SCENE_HEIGHT/2+15);
 
 //        System.out.printf(atomShape.y+" "+yShift);
     }
