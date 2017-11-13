@@ -34,4 +34,7 @@ https://www.youtube.com/watch?v=CN13SZpApR0
 Nov. 12 2017
   * remake from scratch with libgdx and intellij
   * created basic shapes and electric fields with classes
+Nov. 13 2017
+  * created protons, electrons, neutrons which contribute to atom when collided
+  * began ejection framework
 
