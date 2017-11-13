@@ -129,30 +129,51 @@ public class Atom {
 
     public void ejectElectron() {
         // TODO
+        if (numElectrons > 0)
+            numElectrons--;
     }
 
     public void ejectProton() {
-        // TODO
+        if (atomicNum > 1)
+            atomicNum--;
     }
 
     public void ejectNeutron() {
         // TODO
+        if (numNeutrons > 0)
+            numNeutrons--;
     }
 
     public void alphaDecay() {
         // TODO
+        if (numNeutrons > 2 && atomicNum > 3) {
+            numNeutrons -= 2;
+            atomicNum -= 2;
+        }
     }
 
     public void physicsUpdate(){
         // TODO
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_1))
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
             ejectElectron();
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_2))
+            System.out.printf("eject electron");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
             ejectProton();
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_3))
+            System.out.printf("eject proton");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
             ejectNeutron();
-        if (Gdx.input.isKeyPressed(Input.Keys.NUM_4))
+            System.out.printf("eject neutron");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
             alphaDecay();
+            System.out.printf("eject alpha");
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
+            insulator = !insulator;
+        }
 
     }
 

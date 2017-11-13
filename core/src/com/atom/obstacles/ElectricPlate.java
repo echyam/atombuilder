@@ -12,7 +12,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 public class ElectricPlate extends Obstacle {
     // up means top
     public boolean up;
-    public static final float strength = 50;
+    public static final float strength = 100;
     public boolean charge = true;
     public float height;
     public float width;

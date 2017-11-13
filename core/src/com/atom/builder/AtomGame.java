@@ -79,7 +79,7 @@ public class AtomGame extends ApplicationAdapter {
 		electronImage = new Texture("electron.png");
 		protonImage = new Texture("proton.png");
 		neutronImage = new Texture("neutron.png");
-		insulatorImage = new Texture("circle.png");
+		insulatorImage = new Texture("insulator.png");
 		positivePlate = new Texture("positivePlate.png");
 		negativePlate = new Texture("negativePlate.png");
 
@@ -158,6 +158,7 @@ public class AtomGame extends ApplicationAdapter {
 	}
 
 	public void update() {
+        atom.physicsUpdate();
 
 //		System.out.printf(Integer.toString(atom.getAtomicNum())+"\n");
 

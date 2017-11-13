@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Capacitor extends Obstacle{
     // up = top is positively charged
     public boolean up;
-    public float strength;
+    public static final float strength = 100;
     public float height;
     public float width;
     public float x;
@@ -23,7 +23,6 @@ public class Capacitor extends Obstacle{
         height = 100;
         width = 500;
         up = true;
-        strength = 50;
 
         top = new Rectangle(100, AtomGame.SCENE_HEIGHT-height,width,height);
         bottom = new Rectangle(100, 0,width,height);
@@ -33,7 +32,6 @@ public class Capacitor extends Obstacle{
         width = w;
         height = 100;
         up = true;
-        strength = 15;
         x = 100;
 
         top = new Rectangle(x, AtomGame.SCENE_HEIGHT-height,width,height);
@@ -44,7 +42,6 @@ public class Capacitor extends Obstacle{
         width = w;
         height = 100;
         up = true;
-        strength = 15;
         this.x = x;
 
         top = new Rectangle(x, AtomGame.SCENE_HEIGHT-height,width,height);
@@ -55,7 +52,6 @@ public class Capacitor extends Obstacle{
         width = w;
         height = 100;
         up = true;
-        strength = str;
         this.x = x;
 
         top = new Rectangle(x, AtomGame.SCENE_HEIGHT-height,width,height);
@@ -66,7 +62,6 @@ public class Capacitor extends Obstacle{
         width = w;
         height = 100;
         up = ontop;
-        strength = str;
         this.x = x;
 
         top = new Rectangle(x, AtomGame.SCENE_HEIGHT-height,width,height);
