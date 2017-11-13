@@ -12,12 +12,12 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 public class ElectricPlate extends Obstacle {
     // up means top
     public boolean up;
-    public static final double strength = 100;
+    public static final float strength = 100;
     public boolean charge = true;
-    public double height;
-    public double width;
-    public double x;
-    public double y;
+    public float height;
+    public float width;
+    public float x;
+    public float y;
 
     private Rectangle plate;
 
@@ -31,7 +31,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(double w) {
+    public ElectricPlate(float w) {
         width = w;
         height = 100;
         up = true;
@@ -41,7 +41,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(double w, boolean top) {
+    public ElectricPlate(float w, boolean top) {
         width = w;
         height = 100;
         up = top;
@@ -51,7 +51,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(double w, boolean top, boolean pos) {
+    public ElectricPlate(float w, boolean top, boolean pos) {
         width = w;
         height = 100;
         up = top;
@@ -62,7 +62,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(double x, double w) {
+    public ElectricPlate(float x, float w) {
         height = 100;
         width = w;
         up = true;
@@ -72,7 +72,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(double x, double w, boolean top){
+    public ElectricPlate(float x, float w, boolean top){
         height = 100;
         width = w;
         up = top;
@@ -82,7 +82,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(double x, double w, boolean top, boolean pos){
+    public ElectricPlate(float x, float w, boolean top, boolean pos){
         height = 100;
         width = w;
         up = top;

@@ -25,7 +25,7 @@ public class Electron extends Obstacle {
     }
 
     public void draw(SpriteBatch batch, Texture electronImage) {
-        batch.draw(electronImage,x-radius,y-radius);
+        batch.draw(electronImage,(float)(x-radius),(float)(y-radius));
     }
 
     public synchronized void collideAtom(Atom atom) {

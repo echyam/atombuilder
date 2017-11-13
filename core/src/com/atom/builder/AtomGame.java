@@ -300,7 +300,7 @@ public class AtomGame extends ApplicationAdapter {
 
     // plus on top is up
     public double capacitorForce(double atom, double capacitor, boolean up, double ypos) {
-        float pos,neg;
+        double pos,neg;
         if (up) {
             pos = electricPlateForce(atom,capacitor,true,ypos);
             neg = electricPlateForce(atom,-1*capacitor,false,ypos);

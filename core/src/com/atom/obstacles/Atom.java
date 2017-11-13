@@ -57,12 +57,12 @@ public class Atom {
         getSpeed();
 
         atomShape = new Circle();
-        atomShape.setRadius(radius);
+        atomShape.setRadius((float)radius);
         atomShape.x = AtomGame.SCENE_WIDTH/4;
         atomShape.y = 0;
 
         faradaysCage = new Circle();
-        faradaysCage.setRadius(radius*1.5f);
+        faradaysCage.setRadius((float)radius*1.5f);
         faradaysCage.x = atomShape.x;
         faradaysCage.y = atomShape.y;
     }
@@ -70,7 +70,7 @@ public class Atom {
     public void reset() {
         alive = true;
         atomicNum = 1;
-        numElectrons = 0;
+        numElectrons = 1;
         numNeutrons = 0;
         insulator = false;
 
@@ -162,7 +162,7 @@ public class Atom {
 
     public void alphaDecay() {
         // TODO
-        if (numNeutrons > 2 && atomicNum > 3) {
+        if (numNeutrons > 1 && atomicNum > 2) {
             numNeutrons -= 2;
             atomicNum -= 2;
         }
@@ -236,13 +236,13 @@ public class Atom {
                 atomShape.y -= keyboardSpeed * Gdx.graphics.getDeltaTime();
 
             // guarantee atomShape in bounds
-            if (atomShape.x < (-radius)) atomShape.x = (-radius);
+            if (atomShape.x < (-radius)) atomShape.x = (float)(-radius);
             if (atomShape.y < (-AtomGame.SCENE_HEIGHT / 2 + radius))
-                atomShape.y = (-AtomGame.SCENE_HEIGHT / 2 + radius);
+                atomShape.y = (float)(-AtomGame.SCENE_HEIGHT / 2 + (float)radius);
             if (atomShape.x > AtomGame.SCENE_WIDTH - radius)
-                atomShape.x = AtomGame.SCENE_WIDTH - radius;
+                atomShape.x = (float)AtomGame.SCENE_WIDTH - (float)radius;
             if (atomShape.y > AtomGame.SCENE_HEIGHT / 2 - radius)
-                atomShape.y = AtomGame.SCENE_HEIGHT / 2 - radius;
+                atomShape.y = (float)AtomGame.SCENE_HEIGHT / 2 - (float)radius;
         }
     }
 
@@ -254,11 +254,11 @@ public class Atom {
             faradaysCage.x = atomShape.x;
             faradaysCage.y = atomShape.y;
             // TODO test coords
-            batch.draw(insulatorTexture,atomShape.x,AtomGame.SCENE_HEIGHT/2 - radius + atomShape.y+yShift);
+            batch.draw(insulatorTexture,atomShape.x,(float) (AtomGame.SCENE_HEIGHT/2 - radius + atomShape.y+yShift));
         }
 
         // draw atom
-        batch.draw(atomTexture,atomShape.x-radius,AtomGame.SCENE_HEIGHT/2+atomShape.y-radius+yShift);
+        batch.draw(atomTexture, (float) (atomShape.x-radius), (float) (AtomGame.SCENE_HEIGHT/2+atomShape.y-radius+yShift));
 
         // draw element number
         font.draw(batch,elements[atomicNum]+"",atomShape.x-35,atomShape.y+AtomGame.SCENE_HEIGHT/2+15);

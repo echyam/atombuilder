@@ -25,7 +25,7 @@ public class Neutron extends Obstacle {
     }
 
     public void draw(SpriteBatch batch, Texture neutronImage) {
-        batch.draw(neutronImage,x-radius,y-radius);
+        batch.draw(neutronImage,(float)(x-radius),(float)(y-radius));
     }
 
     public synchronized void collideAtom(Atom atom) {

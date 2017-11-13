@@ -11,10 +11,10 @@ import com.badlogic.gdx.math.Rectangle;
 public class Capacitor extends Obstacle{
     // up = top is positively charged
     public boolean up;
-    public static final double strength = 100;
-    public double height;
-    public double width;
-    public double x;
+    public static final float strength = 100;
+    public float height;
+    public float width;
+    public float x;
 
     private Rectangle top;
     private Rectangle bottom;
@@ -28,7 +28,7 @@ public class Capacitor extends Obstacle{
         bottom = new Rectangle(100, 0,width,height);
     }
 
-    public Capacitor(double w) {
+    public Capacitor(float w) {
         width = w;
         height = 100;
         up = true;
@@ -38,7 +38,7 @@ public class Capacitor extends Obstacle{
         bottom = new Rectangle(x, 0,width,height);
     }
 
-    public Capacitor(double x, double w) {
+    public Capacitor(float x, float w) {
         width = w;
         height = 100;
         up = true;
@@ -48,7 +48,7 @@ public class Capacitor extends Obstacle{
         bottom = new Rectangle(x, 0,width,height);
     }
 
-    public Capacitor(double x, double w, double str) {
+    public Capacitor(float x, float w, float str) {
         width = w;
         height = 100;
         up = true;
@@ -58,7 +58,7 @@ public class Capacitor extends Obstacle{
         bottom = new Rectangle(x, 0,width,height);
     }
 
-    public Capacitor(double x, double w, double str, boolean ontop) {
+    public Capacitor(float x, float w, float str, boolean ontop) {
         width = w;
         height = 100;
         up = ontop;

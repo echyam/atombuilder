@@ -25,7 +25,7 @@ public class Proton extends Obstacle {
     }
 
     public void draw(SpriteBatch batch, Texture protonImage) {
-        batch.draw(protonImage,x-radius,y-radius);
+        batch.draw(protonImage,(float)(x-radius),(float)(y-radius));
     }
 
     public synchronized void collideAtom(Atom atom) {
