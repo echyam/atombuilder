@@ -162,7 +162,8 @@ public class AtomGame extends ApplicationAdapter {
 
 //		System.out.printf(Integer.toString(atom.getAtomicNum())+"\n");
 
-		for(Obstacle o : obstacles) {
+		for(int i = 0; i < obstacles.size(); i++) {
+            Obstacle o = obstacles.get(i);
 			if (o instanceof  Capacitor) {
 				Capacitor c = (Capacitor) o;
 			}
@@ -184,7 +185,7 @@ public class AtomGame extends ApplicationAdapter {
 //				System.out.printf("\n"+dist);
 				if (dist <= (atom.getRadius()+e.radius)) {
 					atom.addElectron();
-//					obstacles.remove(o);
+                    obstacles.remove(i);
 				}
 			}
 			if (o instanceof Proton) {
@@ -196,7 +197,7 @@ public class AtomGame extends ApplicationAdapter {
 				if (dist <= (atom.getRadius()+p.radius)) {
 					atom.addProton();
 //					System.out.printf(" "+Float.toString(p.x)+","+Float.toString(p.y));
-//					obstacles.remove(o);
+                    obstacles.remove(i);
 				}
 			}
 			if (o instanceof Neutron) {
@@ -208,7 +209,7 @@ public class AtomGame extends ApplicationAdapter {
 				if (dist <= (atom.getRadius()+n.radius)) {
 					atom.addNeutron();
 //					System.out.printf(" "+Float.toString(p.x)+","+Float.toString(p.y));
-//					obstacles.remove(o);
+                    obstacles.remove(i);
 				}
 			}
 		}

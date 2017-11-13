@@ -157,19 +157,19 @@ public class Atom {
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
             ejectElectron();
-            System.out.printf("eject electron");
+//            System.out.printf("eject electron\n");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
             ejectProton();
-            System.out.printf("eject proton");
+//            System.out.printf("eject proton\n");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
             ejectNeutron();
-            System.out.printf("eject neutron");
+//            System.out.printf("eject neutron\n");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
             alphaDecay();
-            System.out.printf("eject alpha");
+//            System.out.printf("eject alpha\n");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
             insulator = !insulator;
