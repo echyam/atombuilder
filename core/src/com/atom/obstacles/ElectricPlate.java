@@ -7,17 +7,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 /**
- * Created by Lizzy on 11/12/2017.
+ * Created by echyam on 11/12/2017.
  */
 public class ElectricPlate extends Obstacle {
     // up means top
     public boolean up;
-    public static final float strength = 100;
+    public static final double strength = 100;
     public boolean charge = true;
-    public float height;
-    public float width;
-    public float x;
-    public float y;
+    public double height;
+    public double width;
+    public double x;
+    public double y;
 
     private Rectangle plate;
 
@@ -31,7 +31,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(float w) {
+    public ElectricPlate(double w) {
         width = w;
         height = 100;
         up = true;
@@ -41,7 +41,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(float w, boolean top) {
+    public ElectricPlate(double w, boolean top) {
         width = w;
         height = 100;
         up = top;
@@ -51,7 +51,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(float w, boolean top, boolean pos) {
+    public ElectricPlate(double w, boolean top, boolean pos) {
         width = w;
         height = 100;
         up = top;
@@ -62,7 +62,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(float x, float w) {
+    public ElectricPlate(double x, double w) {
         height = 100;
         width = w;
         up = true;
@@ -72,7 +72,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(float x, float w, boolean top){
+    public ElectricPlate(double x, double w, boolean top){
         height = 100;
         width = w;
         up = top;
@@ -82,7 +82,7 @@ public class ElectricPlate extends Obstacle {
         plate = new Rectangle(x, y, width, height);
     }
 
-    public ElectricPlate(float x, float w, boolean top, boolean pos){
+    public ElectricPlate(double x, double w, boolean top, boolean pos){
         height = 100;
         width = w;
         up = top;

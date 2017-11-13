@@ -9,16 +9,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 
 public class Electron extends Obstacle {
-    public float x;
-    public float y;
-    public final float radius = 25;
+    public double x;
+    public double y;
+    public final double radius = 25;
+//    public boolean alive = true;
 
     public Electron() {
         x = AtomGame.SCENE_WIDTH-200;
         y = AtomGame.SCENE_HEIGHT/2;
     }
 
-    public Electron(float xx, float yy) {
+    public Electron(double xx, double yy) {
         x = xx;
         y = yy;
     }
@@ -27,8 +28,11 @@ public class Electron extends Obstacle {
         batch.draw(electronImage,x-radius,y-radius);
     }
 
-    public void collideAtom(Atom atom) {
+    public synchronized void collideAtom(Atom atom) {
         // TODO
-        atom.addElectron();
+        if (alive) {
+            alive = false;
+            atom.addElectron();
+        }
     }
 }

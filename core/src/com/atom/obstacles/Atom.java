@@ -10,31 +10,41 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector3;
 
+import java.sql.Time;
+
 /**
- * Created by Lizzy on 11/12/2017.
+ * Created by echyam on 11/12/2017.
  */
 public class Atom {
+    private int boost = 0;
+    private final int NONE = 0;
+    private final int ELECTRON = 1;
+    private final int PROTON = 2;
+    private final int NEUTRON = 3;
+    private final int ALPHA = 4;
+    private final double boostCooldown = 2;
+    private double cooldown = boostCooldown;
+
+    private final int[] ejectionBoosts = {0,1,2,2,3};
+    private String[] elements = {"","H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr","Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe","Cs","Ba","La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn","Fr","Ra","Ac","Th","Pa","U","Np","Pu","Am","Cm","Bk","Cf","Es","Fm","Md","No","Lr","Rf","Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn","Nh","Fl","Mc","Lv","Ts","Og"};
+
     private int atomicNum;
     private int numElectrons;
     private int numNeutrons;
+    private double charge;
 
-    private float charge;
-    private float strength;
-    private float speed;
+    private double strength;
+    private double speed;
+
     private boolean insulator;
-
-    private float boost = 0;
-    private final float boostCooldown = 2;
-
-    private float radius = 100;
+    private double radius = 100;
     private Circle atomShape;
+
     private Circle faradaysCage;
 
     public boolean alive;
 
-    public final float keyboardSpeed = 800;
-
-    private String[] elements = {"","H","He","Li","Be","B","C","N","O","F","Ne","Na","Mg","Al","Si","P","S","Cl","Ar","K","Ca","Sc","Ti","V","Cr","Mn","Fe","Co","Ni","Cu","Zn","Ga","Ge","As","Se","Br","Kr","Rb","Sr","Y","Zr","Nb","Mo","Tc","Ru","Rh","Pd","Ag","Cd","In","Sn","Sb","Te","I","Xe","Cs","Ba","La","Ce","Pr","Nd","Pm","Sm","Eu","Gd","Tb","Dy","Ho","Er","Tm","Yb","Lu","Hf","Ta","W","Re","Os","Ir","Pt","Au","Hg","Tl","Pb","Bi","Po","At","Rn","Fr","Ra","Ac","Th","Pa","U","Np","Pu","Am","Cm","Bk","Cf","Es","Fm","Md","No","Lr","Rf","Db","Sg","Bh","Hs","Mt","Ds","Rg","Cn","Nh","Fl","Mc","Lv","Ts","Og"};
+    public final double keyboardSpeed = 800;
 
     public Atom() {
         alive = true;
@@ -73,16 +83,22 @@ public class Atom {
         faradaysCage.y = atomShape.y;
     }
 
-    public float getSpeed() {
+    public double getSpeed() {
         if (atomicNum + numNeutrons > 118)
             speed = 0.1f;
         else
             speed = -1*(atomicNum+numNeutrons)*(atomicNum+numNeutrons)/1400 + 10;
 //        speed = 10;
+        if (boost > NONE) {
+            speed += ejectionBoosts[boost];
+            cooldown -= Gdx.graphics.getDeltaTime();
+            if (cooldown <= 0)
+                boost = NONE;
+        }
         return speed;
     }
 
-    public float getCharge() {
+    public double getCharge() {
         charge = atomicNum - numElectrons;
         return charge;
     }
@@ -95,12 +111,12 @@ public class Atom {
 
     public int getNumNeutrons() { return numNeutrons; }
 
-    public float getRadius() {
+    public double getRadius() {
         return radius;
     }
 
     public void addProton() {
-//        System.out.printf("proton!\n"+Float.toString(atomShape.x)+","+Float.toString(AtomGame.SCENE_HEIGHT/2+atomShape.y));
+//        System.out.printf("proton!\n"+double.toString(atomShape.x)+","+double.toString(AtomGame.SCENE_HEIGHT/2+atomShape.y));
         if (atomicNum < elements.length-1)
             atomicNum += 1;
         else
@@ -119,11 +135,11 @@ public class Atom {
         numNeutrons += 1;
     }
 
-    public float xPos() {
+    public double xPos() {
         return atomShape.x;
     }
 
-    public float yPos() {
+    public double yPos() {
         return atomShape.y;
     }
 
@@ -154,21 +170,31 @@ public class Atom {
 
     public void physicsUpdate(){
         // TODO
+        if (boost > NONE)
+            cooldown -= Gdx.graphics.getDeltaTime();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
             ejectElectron();
+            boost = ELECTRON;
+            cooldown = boostCooldown;
 //            System.out.printf("eject electron\n");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
             ejectProton();
+            boost = PROTON;
+            cooldown = boostCooldown;
 //            System.out.printf("eject proton\n");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_3)) {
             ejectNeutron();
+            boost = NEUTRON;
+            cooldown = boostCooldown;
 //            System.out.printf("eject neutron\n");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_4)) {
             alphaDecay();
+            boost = ALPHA;
+            cooldown = boostCooldown;
 //            System.out.printf("eject alpha\n");
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.F)) {
@@ -177,7 +203,7 @@ public class Atom {
 
     }
 
-    public void graphicsUpdate(OrthographicCamera camera, float yShift) {
+    public void graphicsUpdate(OrthographicCamera camera, double yShift) {
         if (Math.abs(yShift) > 800)
             yShift = 0;
         atomShape.y += yShift;
@@ -220,7 +246,7 @@ public class Atom {
         }
     }
 
-    public void draw(SpriteBatch batch, OrthographicCamera camera, Texture atomTexture, Texture insulatorTexture, float yShift, BitmapFont font) {
+    public void draw(SpriteBatch batch, OrthographicCamera camera, Texture atomTexture, Texture insulatorTexture, double yShift, BitmapFont font) {
         graphicsUpdate(camera,yShift);
 
         // draw insulator
