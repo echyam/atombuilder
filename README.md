@@ -1,7 +1,7 @@
 # Atom Builder
 
 ## About
-I've been thinking about making a physics-based atom game since working on [Askew](https://github.com/MantisInk/askew-coursedev). Senior fall, after getting a job, I finally to get off my lazy ass and figure out how apps work, and then make the game, so here's how it's going.
+I've been thinking about making a physics-based atom game since working on [Askew](https://github.com/MantisInk/askew-coursedev). Senior fall, after getting a job, I finally decided to get off my lazy ass and figure out how apps work, and then make the game, so here's how it's going.
 
 ## dev help
 
@@ -21,7 +21,7 @@ I've been thinking about making a physics-based atom game since working on [Aske
   * Android App -> android
     * (hopefully is preset)
 
-### links
+### setup links
 https://github.com/libgdx/libgdx/wiki/Project-Setup-Gradle
 
 https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA
@@ -34,7 +34,22 @@ https://www.youtube.com/watch?v=CN13SZpApR0
 Nov. 12 2017
   * remake from scratch with libgdx and intellij
   * created basic shapes and electric fields with classes
+  
 Nov. 13 2017
   * created protons, electrons, neutrons which contribute to atom when collided
   * began ejection framework
+  * particle ejection
+  * speed boosts
+## // TODO
+  * synchro collisions
+  * janky plate interaction when AN > 1
+  * runner/level (autogenerator)
+  * insulator/faraday cage
+  * buttons
+  * menu?
+## // maybe
+  * electric storm
+  * flying atoms
+  * iOS
+  
 
