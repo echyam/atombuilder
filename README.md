@@ -49,6 +49,7 @@ Nov. 13 2017
   * buttons
   * menu?
 ## // maybe
+  * flexible plate sizing/individual +/- pieces & charges
   * electric storm
   * flying atoms
   * iOS
